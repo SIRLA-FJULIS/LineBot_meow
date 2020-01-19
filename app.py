@@ -8,7 +8,7 @@ from linebot.exceptions import (
     InvalidSignatureError
 )
 from linebot.models import (
-    MessageEvent, TextMessage, TextSendMessage,
+    MessageEvent, TextMessage, TextSendMessage, TemplateSendMessage, ButtonsTemplate, PostbackTemplateAction, MessageTemplateAction, URITemplateAction
 )
 
 import requests
@@ -48,19 +48,44 @@ def handle_message(event):
     if event.message.text == "餵食":
         reply = "謝謝您的餵食"
         if event.source.user_id not in Favorability:
-            Favorability[event.source.user_id] = 0
+            Favorability[event.source.user_id] = 5
         else:
             Favorability[event.source.user_id] = Favorability[event.source.user_id] + 5
         print(Favorability)
     elif event.message.text == "逗貓":
-        pass
+        reply = TemplateSendMessage(
+            alt_text = 'Buttons template',
+            template = ButtonsTemplate(
+                thumbnail_image_url='https://example.com/image.jpg',
+                title='Menu',
+                text='請選擇一根逗貓棒',
+                actions=[
+                    MessageTemplateAction(
+                        label='普通的逗貓棒',
+                        text='普通的逗貓棒'
+                    ),
+                    MessageTemplateAction(
+                        label='一條魚',
+                        text='一條魚'
+                    ),
+                    MessageTemplateAction(
+                        label='一隻老鼠',
+                        text='一隻老鼠'
+                    )
+                ]
+            )
+        )
+        
     elif event.message.text == "查看好感度":
         reply = Favorability[event.source.user_id]
 
-    line_bot_api.reply_message(
-        event.reply_token,
-        TextSendMessage(text=reply + meow)
-    )
+    if event.message.text == "逗貓":
+        line_bot_api.reply_message(event.reply_token, reply)
+    else:
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text=reply + meow)
+        )
         
 if __name__ == "__main__":
     app.run()
