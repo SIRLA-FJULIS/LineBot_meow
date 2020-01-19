@@ -56,6 +56,7 @@ def handle_message(event):
         pass
     elif event.message.text == "查看好感度":
         reply = Favorability[event.source.user_id]
+
     line_bot_api.reply_message(
         event.reply_token,
         TextSendMessage(text=reply + meow)
@@ -64,4 +65,4 @@ def handle_message(event):
 if __name__ == "__main__":
     app.run()
 
-# https://cat-for-you.herokuapp.com
+# https://cat-for-you.herokuapp.com 
