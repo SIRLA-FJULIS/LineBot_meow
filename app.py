@@ -1,6 +1,6 @@
 import os
 import random
-from flask import Flask, request, abort
+from flask import Flask, abort
 
 from linebot import (
     LineBotApi, WebhookHandler
@@ -11,9 +11,6 @@ from linebot.exceptions import (
 from linebot.models import (
     MessageEvent, TextMessage, TextSendMessage, TemplateSendMessage, ButtonsTemplate, PostbackTemplateAction, MessageTemplateAction, URITemplateAction, ImageSendMessage
 )
-
-import requests
-from bs4 import BeautifulSoup
 
 app = Flask(__name__)
 
@@ -187,5 +184,4 @@ def handle_message(event):
         
 if __name__ == "__main__":
     app.run()
-
 # https://cat-for-you.herokuapp.com
