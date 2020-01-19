@@ -18,10 +18,10 @@ line_bot_api = LineBotApi(os.environ.get('CHANNEL_ACCESS_TOKEN'))
 handler = WebhookHandler(os.environ.get('CHANNEL_SECRET'))
 
 Favorability = {}
-cat_toy = {'普通的逗貓棒':'https://i.imgur.com/jtbU0Gi.png', '一條魚':'https://i.imgur.com/ncK4QZL.png', '一隻老鼠':'https://i.imgur.com/QKxHgMj.png'}
+cat_toy = {'普通的逗貓棒':['https://i.imgur.com/jtbU0Gi.png'], '一條魚':['https://i.imgur.com/ncK4QZL.png'], '一隻老鼠':['https://i.imgur.com/mb6Ws0g.png', 'https://i.imgur.com/wTJCm9H.png']}
 cat_food = {'點心':'https://i.imgur.com/wLs0yHy.png', '罐頭':'https://i.imgur.com/g4iJv1x.png', '貓糧':'https://i.imgur.com/9ZqH3Rk.png'}
 Emergencies = ['貓貓趴在你的電腦鍵盤上，偷偷看著你', '貓貓睡著了，請不要吵到他', '貓貓蹲在你背後，她感覺餓了', '貓貓坐在你腳上，蹭了你的肚子']
-
+love = ['https://i.imgur.com/PzuAI3G.png', 'https://i.imgur.com/zOI0H0i.png']
 @app.route("/callback", methods=['POST'])
 def callback():
     # get X-Line-Signature header value
@@ -100,6 +100,7 @@ def handle_message(event):
         if event.source.user_id not in Favorability:
             Favorability[event.source.user_id] = 0
         cat_talk = str(Favorability[event.source.user_id])
+        print(Favorability)
 
 
 
@@ -115,14 +116,14 @@ def handle_message(event):
             cat_talk = random.choice(["我才沒有想跟你玩呢!(撲過去", "走開，我才沒有要跟你玩呢(偷喵"])
 
         if event.source.user_id not in Favorability:
-            Favorability[event.source.user_id] = add
+            Favorability[event.source.user_id] = 0 + add
         else:
             Favorability[event.source.user_id] = Favorability[event.source.user_id] + add
 
         reply = [
         ImageSendMessage(
-            original_content_url=cat_toy[event.message.text],
-            preview_image_url=cat_toy[event.message.text]
+            original_content_url=random.choice(cat_toy[event.message.text]),
+            preview_image_url=random.choice(cat_toy[event.message.text])
         ),
         TextSendMessage(text=cat_talk)
         ]
@@ -140,7 +141,7 @@ def handle_message(event):
             cat_talk = "奴才做得不錯嘛"
 
         if event.source.user_id not in Favorability:
-            Favorability[event.source.user_id] = add
+            Favorability[event.source.user_id] = 0 + add
         else:
             Favorability[event.source.user_id] = Favorability[event.source.user_id] + add
 
@@ -157,10 +158,11 @@ def handle_message(event):
 
     else:
         if  Favorability[event.source.user_id] >= 100:
+            picture = random.choice(love)
             reply = [
             ImageSendMessage(
-            original_content_url='https://i.imgur.com/zOI0H0i.png',
-            preview_image_url='https://i.imgur.com/zOI0H0i.png'
+            original_content_url=picture,
+            preview_image_url=picture
             ),
             TextSendMessage(text=cat_talk + meow)
             ]
@@ -184,4 +186,5 @@ def handle_message(event):
         
 if __name__ == "__main__":
     app.run()
+
 # https://cat-for-you.herokuapp.com
