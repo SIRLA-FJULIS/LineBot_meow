@@ -113,7 +113,7 @@ def handle_message(event):
         if add <= 0:
             cat_talk = random.choice(["去去，貓貓不想跟你玩了", "去去，奴才走"])
         else:
-            cat_talk = random.choice(["我才沒有想跟你玩呢!(撲過去", "走開，我才沒有要跟你玩呢(偷喵"])
+            cat_talk = random.choice(["我才沒有想跟你玩呢!(撲過去", "走開，我才沒有要跟你玩呢(偷瞄"])
 
         if event.source.user_id not in Favorability:
             Favorability[event.source.user_id] = 0 + add
