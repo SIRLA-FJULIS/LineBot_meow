@@ -1,5 +1,2 @@
 .env
-.gitgnore
-scrawl.py
-app_movie.py
-try.py
+venv
